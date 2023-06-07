@@ -15,7 +15,7 @@ export class UsersService {
   }
   async create(
     createUserDto: CreateUserDto,
-  ): Promise<User | { warningMessage: string }> {
+  ): Promise<Omit<User, User['password']> | { warningMessage: string }> {
     const user = new User();
     const existingByUserName = await this.findOne({
       where: { username: createUserDto.username },
@@ -38,6 +38,10 @@ export class UsersService {
     user.password = hashedPassword;
     user.email = createUserDto.email;
 
-    return user.save();
+    await user.save();
+
+    const { password, ...userData } = user.dataValues;
+
+    return userData;
   }
 }
