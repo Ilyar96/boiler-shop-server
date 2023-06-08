@@ -13,7 +13,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { LocalAuthGuard } from '../auth/local.auth.guard';
 import { AuthenticatedGuard } from '../auth/authenticated.guard';
-import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
   LoginCheckResponse,
   LoginUserRequest,
@@ -22,6 +22,7 @@ import {
   SignupResponse,
 } from './types';
 
+@ApiTags('Auth')
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
