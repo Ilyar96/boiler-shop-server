@@ -14,8 +14,8 @@ export class BoilerPartsService {
   async paginateAndFilter(
     query: IBoilerPartsQuery,
   ): Promise<{ count: number; rows: BoilerParts[] }> {
-    const limit = +query.limit || 20;
-    const offset = +query.offset * limit;
+    const limit = query?.limit ? +query.limit : 20;
+    const offset = query?.offset && query?.limit ? +query.offset * limit : 0;
     return this.boilerPartsModel.findAndCountAll({ limit, offset });
   }
 

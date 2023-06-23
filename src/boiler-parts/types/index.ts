@@ -2,8 +2,8 @@ import { faker } from '@faker-js/faker';
 import { ApiProperty } from '@nestjs/swagger';
 
 export interface IBoilerPartsQuery {
-  limit: string;
-  offset: string;
+  limit?: string;
+  offset?: string;
 }
 
 class BoilerParts {
@@ -51,6 +51,20 @@ class BoilerParts {
 
   @ApiProperty({ example: '2023-01-31T19:46:45.000Z' })
   updatedAt: string;
+}
+
+export class BoilerPartsQuery {
+  @ApiProperty({
+    example: '20',
+    required: false,
+  })
+  count: string;
+
+  @ApiProperty({
+    example: '0',
+    required: false,
+  })
+  offset: string;
 }
 
 export class PaginateAndFilterResponse {

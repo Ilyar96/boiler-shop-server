@@ -12,6 +12,11 @@ async function bootstrap() {
   app.use(passport.initialize());
   app.use(passport.session());
 
+  app.enableCors({
+    credentials: true,
+    origin: [process.env.CLIENT_DOMAIN],
+  });
+
   const config = new DocumentBuilder()
     .setTitle('Аква термикс')
     .setDescription('api documentation')

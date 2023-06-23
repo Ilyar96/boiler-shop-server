@@ -18,18 +18,21 @@ import {
   SearchRequest,
   GetByNameResponse,
   GetByNameRequest,
+  IBoilerPartsQuery,
+  BoilerPartsQuery,
 } from './types';
-import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Boiler parts')
 @Controller('boiler-parts')
 export class BoilerPartsController {
   constructor(private readonly boilerPartsService: BoilerPartsService) {}
 
+  @ApiQuery({ type: BoilerPartsQuery })
   @ApiOkResponse({ type: PaginateAndFilterResponse })
   @UseGuards(AuthenticatedGuard)
   @Get()
-  paginateAndFilter(@Query() query) {
+  paginateAndFilter(@Query() query: IBoilerPartsQuery) {
     return this.boilerPartsService.paginateAndFilter(query);
   }
 
