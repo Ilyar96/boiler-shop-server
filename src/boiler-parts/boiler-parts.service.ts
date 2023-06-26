@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { BoilerParts } from './boiler-parts.model';
 import { IBoilerPartsQuery } from './types';
-import { Op } from 'sequelize';
+import { Op, Order } from 'sequelize';
 
 @Injectable()
 export class BoilerPartsService {
@@ -16,7 +16,17 @@ export class BoilerPartsService {
   ): Promise<{ count: number; rows: BoilerParts[] }> {
     const limit = query?.limit ? +query.limit : 20;
     const offset = query?.offset && query?.limit ? +query.offset * limit : 0;
-    return this.boilerPartsModel.findAndCountAll({ limit, offset });
+    const sortType =
+      query?.sortType && query?.sortType === '-1' ? 'DESC' : 'ASC';
+    const order: Order = query?.sortField
+      ? [[query.sortField, sortType]]
+      : undefined;
+
+    return this.boilerPartsModel.findAndCountAll({
+      limit,
+      offset,
+      order: order,
+    });
   }
 
   async bestsellers(): Promise<{ count: number; rows: BoilerParts[] }> {

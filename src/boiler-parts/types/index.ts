@@ -4,6 +4,8 @@ import { ApiProperty } from '@nestjs/swagger';
 export interface IBoilerPartsQuery {
   limit?: string;
   offset?: string;
+  sortField?: string;
+  sortType?: '1' | '-1';
 }
 
 class BoilerParts {
@@ -65,6 +67,22 @@ export class BoilerPartsQuery {
     required: false,
   })
   offset: string;
+
+  @ApiProperty({
+    example: 'price',
+    required: false,
+    description:
+      'Поля по которым нужно отсортировать. Доступны все любые поля из модели.',
+  })
+  sortField: string;
+
+  @ApiProperty({
+    example: '1',
+    required: false,
+    description:
+      'Тип сортировки. Для каждого поля нужно указать тип сортировки: 1 - по возрастанию -1 - по убыванию.',
+  })
+  sortType: '1' | '-1';
 }
 
 export class PaginateAndFilterResponse {
