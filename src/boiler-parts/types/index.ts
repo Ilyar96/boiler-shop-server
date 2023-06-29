@@ -1,11 +1,21 @@
 import { faker } from '@faker-js/faker';
 import { ApiProperty } from '@nestjs/swagger';
+import { Op } from 'sequelize';
 
 export interface IBoilerPartsQuery {
   limit?: string;
   offset?: string;
-  sortField?: string;
-  sortType?: '1' | '-1';
+  first?: string;
+  boiler?: string;
+  parts?: string;
+  priceFrom?: string;
+  priceTo?: string;
+}
+
+export interface IBoilerPartsFilter {
+  boiler_manufacturer?: string;
+  parts_manufacturer?: string;
+  price?: { [Op.between]: number[] };
 }
 
 class BoilerParts {
@@ -60,7 +70,7 @@ export class BoilerPartsQuery {
     example: '20',
     required: false,
   })
-  count: string;
+  limit: string;
 
   @ApiProperty({
     example: '0',
@@ -69,20 +79,34 @@ export class BoilerPartsQuery {
   offset: string;
 
   @ApiProperty({
-    example: 'price',
+    example: 'popularity',
     required: false,
-    description:
-      'Поля по которым нужно отсортировать. Доступны все любые поля из модели.',
   })
-  sortField: string;
+  first: 'popularity' | 'cheap' | 'expensive';
 
   @ApiProperty({
-    example: '1',
+    example: 'Ariston',
     required: false,
-    description:
-      'Тип сортировки. Для каждого поля нужно указать тип сортировки: 1 - по возрастанию -1 - по убыванию.',
   })
-  sortType: '1' | '-1';
+  boilers: string;
+
+  @ApiProperty({
+    example: 'Azure',
+    required: false,
+  })
+  parts: string;
+
+  @ApiProperty({
+    example: 1000,
+    required: false,
+  })
+  priceFrom: number;
+
+  @ApiProperty({
+    example: 9000,
+    required: false,
+  })
+  priceTo: number;
 }
 
 export class PaginateAndFilterResponse {

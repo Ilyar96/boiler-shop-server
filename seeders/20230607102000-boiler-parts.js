@@ -1,29 +1,6 @@
+import { boilerManufacturers, partsManufacturers } from '../src/constants';
 const { faker } = require('@faker-js/faker');
 ('use strict');
-
-const boilerManufacturers = [
-  'Ariston',
-  'Chaffoteaux&Maury',
-  'Baxi',
-  'Bongioanni',
-  'Saunier Duval',
-  'Buderus',
-  'Strategist',
-  'Henry',
-  'Northwest',
-];
-const partsManufacturers = [
-  'Azure',
-  'Gloves',
-  'Cambridgeshire',
-  'Salmon',
-  'Montana',
-  'Sensor',
-  'Lesly',
-  'Radian',
-  'Gasoline',
-  'Croatia',
-];
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {

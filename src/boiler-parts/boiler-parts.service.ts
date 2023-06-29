@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { BoilerParts } from './boiler-parts.model';
-import { IBoilerPartsQuery } from './types';
+import { IBoilerPartsFilter, IBoilerPartsQuery } from './types';
 import { Op, Order } from 'sequelize';
 
 @Injectable()
@@ -16,16 +16,46 @@ export class BoilerPartsService {
   ): Promise<{ count: number; rows: BoilerParts[] }> {
     const limit = query?.limit ? +query.limit : 20;
     const offset = query?.offset && query?.limit ? +query.offset * limit : 0;
-    const sortType =
-      query?.sortType && query?.sortType === '-1' ? 'DESC' : 'ASC';
-    const order: Order = query?.sortField
-      ? [[query.sortField, sortType]]
-      : undefined;
+
+    let order: Order = [['popularity', 'DESC']];
+
+    if (query.first) {
+      switch (query.first) {
+        case 'cheap':
+          order = [['price', 'ASC']];
+          break;
+        case 'expensive':
+          order = [['price', 'DESC']];
+          break;
+        case 'popular':
+          order = [['popularity', 'DESC']];
+          break;
+      }
+    }
+
+    const filter = {} as Partial<IBoilerPartsFilter>;
+
+    if (query.priceFrom && query.priceTo) {
+      filter.price = {
+        [Op.between]: [+query.priceFrom, +query.priceTo],
+      };
+    }
+
+    if (query.boiler) {
+      console.log(query.boiler);
+
+      filter.boiler_manufacturer = JSON.parse(decodeURIComponent(query.boiler));
+    }
+
+    if (query.parts) {
+      filter.parts_manufacturer = JSON.parse(decodeURIComponent(query.parts));
+    }
 
     return this.boilerPartsModel.findAndCountAll({
       limit,
       offset,
       order: order,
+      where: filter,
     });
   }
 
