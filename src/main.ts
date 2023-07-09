@@ -14,7 +14,7 @@ async function bootstrap() {
 
   app.enableCors({
     credentials: true,
-    origin: [process.env.CLIENT_DOMAIN],
+    origin: [process.env.CLIENT_DOMAIN_1, process.env.CLIENT_DOMAIN_2],
   });
 
   const config = new DocumentBuilder()
